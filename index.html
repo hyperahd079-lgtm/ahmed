@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>النهاية</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020207;color:#eee;font-family:Cairo,"Segoe UI",sans-serif}
+#space{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+body:before{
+  content:"";position:fixed;inset:-20%;z-index:1;pointer-events:none;
+  background:
+   radial-gradient(circle at 50% 45%,rgba(110,80,150,.14),transparent 28%),
+   radial-gradient(circle at 20% 70%,rgba(180,90,120,.09),transparent 25%),
+   radial-gradient(circle at 80% 20%,rgba(90,110,180,.08),transparent 25%);
+  filter:blur(25px);animation:nebula 16s ease-in-out infinite alternate
+}
+@keyframes nebula{to{transform:scale(1.08) rotate(2deg);opacity:.75}}
+.cinematicLight{
+ position:fixed;inset:-30%;z-index:1;pointer-events:none;
+ background:conic-gradient(from 210deg at 50% 50%,transparent 0deg,rgba(180,150,210,.045) 70deg,transparent 150deg,rgba(120,150,210,.035) 250deg,transparent 330deg);
+ filter:blur(35px);animation:lightDrift 24s linear infinite
+}
+@keyframes lightDrift{to{transform:rotate(360deg)}}
+.shade{position:fixed;inset:0;z-index:2;pointer-events:none;
+ background:radial-gradient(ellipse at center,transparent 20%,rgba(0,0,0,.28) 58%,#000 100%)}
+.start{position:fixed;inset:0;background:rgba(1,1,5,.72);backdrop-filter:blur(5px);
+ z-index:10;display:grid;place-items:center;text-align:center;transition:1.6s}
+.start.hide{opacity:0;pointer-events:none}
+.startBox{animation:breath 4s ease-in-out infinite}
+@keyframes breath{50%{transform:translateY(-5px)}}
+.title{font-size:clamp(32px,9vw,62px);font-weight:200;letter-spacing:8px;
+ text-shadow:0 0 35px rgba(255,255,255,.18)}
+.hint{margin-top:18px;color:#888;font-size:12px;letter-spacing:2px}
+.tap{margin:25px auto 0;width:46px;height:46px;border:1px solid rgba(255,255,255,.25);
+ border-radius:50%;display:grid;place-items:center;animation:ring 2s infinite}
+.tap:after{content:"";width:7px;height:7px;border-radius:50%;background:#fff;opacity:.75}
+@keyframes ring{50%{box-shadow:0 0 0 14px rgba(255,255,255,.03)}}
+
+.viewport{position:fixed;inset:0;z-index:4;overflow:hidden;perspective:500px}
+.credits{position:absolute;left:7%;width:86%;top:100vh;text-align:center;will-change:transform}
+.block{margin:0 auto 150px;max-width:800px;font-size:clamp(21px,5vw,38px);
+ font-weight:300;line-height:2.05;text-shadow:0 2px 22px #000}
+.block small{display:block;color:#777;font-size:.45em;margin-bottom:18px;letter-spacing:3px}
+.block strong{font-weight:500;font-size:1.14em}
+.soft{color:#aaa}
+.end{margin-top:100px;padding-bottom:120vh;color:#777;font-size:clamp(14px,3vw,20px)}
+.end b{display:block;color:#ddd;font-size:1.45em;font-weight:300;margin-bottom:18px}
+
+.floatHeart{position:fixed;z-index:3;pointer-events:none;font-size:14px;opacity:0;
+ animation:floatUp linear forwards}
+@keyframes floatUp{
+  0%{transform:translateY(20px) scale(.6);opacity:0}
+  15%{opacity:.55}
+  100%{transform:translateY(-110vh) translateX(var(--drift)) scale(1.15);opacity:0}
+}
+.vignetteTop,.vignetteBottom{position:fixed;left:0;width:100%;height:20vh;z-index:6;pointer-events:none}
+.vignetteTop{top:0;background:linear-gradient(#000 0%,rgba(0,0,0,.82) 35%,transparent)}
+.vignetteBottom{bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 65%,#000)}
+.music{position:fixed;z-index:9;right:18px;bottom:18px;width:38px;height:38px;
+ border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(0,0,0,.3);
+ color:#aaa;font-size:13px;display:grid;place-items:center;opacity:0;transition:1s}
+.music.on{opacity:.8}
+
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+<div class="shade"></div><div class="cinematicLight"></div>
+
+<div class="start" id="start" role="button" tabindex="0" aria-label="ابدأ">
+  <div class="startBox">
+    <div class="title">النهاية</div>
+    <div class="hint">A FINAL MEMORY</div>
+    <div class="tap"></div>
+  </div>
+</div>
+
+<audio id="music" preload="auto" loop>
+  <source src="tenadeek-space.mp3" type="audio/mpeg">
+</audio>
+<div class="music" id="musicIcon">♫</div>
+
+<div class="viewport">
+<div class="credits" id="credits">
+  <div class="block">
+    <small>منذ ٢٣١٢ يوم</small>
+  </div>
+
+  <div class="block">
+    <small>CREDITS</small>
+    <div style="font-size:.72em;line-height:2.25;color:#aaa;direction:ltr">
+      A Film by · Ahmed Jasim<br>
+      Written by · Ahmed Jasim<br>
+      Directed by · Ahmed Jasim<br>
+      Produced by · Ahmed Jasim<br>
+      Executive Producer · Ahmed Jasim<br>
+      Story & Concept · Ahmed Jasim<br>
+      Screenplay · Ahmed Jasim<br>
+      Cinematography · Ahmed Jasim<br>
+      Edited by · Ahmed Jasim<br>
+      Color Grading · Ahmed Jasim<br>
+      Production Design · Ahmed Jasim<br>
+      Motion Design · Ahmed Jasim<br>
+      Visual Effects · Ahmed Jasim<br>
+      Sound Design · Ahmed Jasim<br>
+      Music · Ahmed Jasim<br>
+      Web Development · Ahmed Jasim<br>
+      Creative Direction · Ahmed Jasim<br>
+      Art Direction · Ahmed Jasim<br>
+      Special Thanks · Ahmed Jasim<br>
+      Created with Love · Ahmed Jasim
+    </div>
+  </div>
+
+  <div class="block end"><b>النهاية.</b>صنع بحب · أحمد جاسم</div>
+<div class="grain" aria-hidden="true"></div><div class="vignetteTop"></div>
+<div class="vignetteBottom"></div>
+
+<script>
+const canvas=document.getElementById('space');
+const ctx=canvas.getContext('2d');
+const start=document.getElementById('start');
+const credits=document.getElementById('credits');
+const music=document.getElementById('music');
+const musicIcon=document.getElementById('musicIcon');
+
+let W,H,dpr,stars=[],started=false;
+
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,1.5);
+  W=innerWidth; H=innerHeight;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  stars=Array.from({length:Math.min(180,Math.floor(W*H/7000))},()=>({
+    x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.15,
+    a:Math.random()*.7+.2,s:Math.random()*.018+.004
+  }));
+}
+resize(); addEventListener('resize',resize);
+
+function draw(t=0){
+  ctx.clearRect(0,0,W,H);
+  const g=ctx.createRadialGradient(W*.52,H*.45,0,W*.52,H*.45,Math.max(W,H)*.7);
+  g.addColorStop(0,'rgba(38,25,55,.25)');
+  g.addColorStop(.45,'rgba(12,12,28,.12)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  for(const s of stars){
+    const tw=s.a + Math.sin(t*s.s*10+s.x)*.12;
+    ctx.globalAlpha=Math.max(.08,tw);
+    ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+function heart(){
+  if(!started)return;
+  const h=document.createElement('div');
+  h.className='floatHeart';
+  h.textContent=Math.random()>.25?'♡':'·';
+  h.style.left=(Math.random()*92+4)+'%';
+  h.style.bottom=(-20-Math.random()*20)+'px';
+  h.style.setProperty('--drift',(Math.random()*100-50)+'px');
+  h.style.animationDuration=(7+Math.random()*7)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),15000);
+}
+setInterval(heart,900);
+
+function begin(e){
+  if(e)e.preventDefault();
+  if(started)return;
+  started=true;
+  start.classList.add('hide');
+
+  music.volume=.72;
+  music.play().then(()=>{
+    musicIcon.classList.add('on');
+  }).catch(()=>{});
+
+  const distance=credits.scrollHeight+innerHeight;
+  const duration=45000;
+  const startTime=performance.now();
+
+  function roll(now){
+    const p=Math.min((now-startTime)/duration,1);
+    credits.style.transform=`translateY(${-p*distance}px)`;
+    if(p<1) requestAnimationFrame(roll);
+  }
+  requestAnimationFrame(roll);
+}
+
+start.addEventListener('click',begin);
+start.addEventListener('touchend',begin,{passive:false});
+start.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' '){begin(e)}
+});
+
+musicIcon.addEventListener('click',e=>{
+  e.stopPropagation();
+  if(music.paused){music.play();musicIcon.textContent='♫'}
+  else{music.pause();musicIcon.textContent='Ⅱ'}
+});
+</script>
+</body>
+</html>
