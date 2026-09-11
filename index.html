@@ -58,17 +58,24 @@ body:before{
 .vignetteTop,.vignetteBottom{position:fixed;left:0;width:100%;height:20vh;z-index:6;pointer-events:none}
 .vignetteTop{top:0;background:linear-gradient(#000 0%,rgba(0,0,0,.82) 35%,transparent)}
 .vignetteBottom{bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 65%,#000)}
-.music{position:fixed;z-index:9;right:18px;bottom:18px;width:38px;height:38px;
- border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(0,0,0,.3);
- color:#aaa;font-size:13px;display:grid;place-items:center;opacity:0;transition:1s}
-.music.on{opacity:.8}
 
+
+
+.music{position:fixed;z-index:9;right:18px;bottom:18px;width:38px;height:38px;
+  border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(0,0,0,.3);
+  color:#aaa;font-size:13px;display:grid;place-items:center;opacity:0;transition:1s}
+.music.on{opacity:.8}
 </style>
 </head>
 <body>
 
 <canvas id="space"></canvas>
 <div class="shade"></div><div class="cinematicLight"></div>
+
+<audio id="music" preload="auto">
+  <source src="tenadeek-space.mp3.mpeg" type="audio/mpeg">
+</audio>
+<div class="music" id="musicIcon">♫</div>
 
 <div class="start" id="start" role="button" tabindex="0" aria-label="ابدأ">
   <div class="startBox">
@@ -77,12 +84,6 @@ body:before{
     <div class="tap"></div>
   </div>
 </div>
-
-<audio id="music" preload="auto" loop>
-  <source src="tenadeek-space.mp3.mpeg" type="audio/mpeg">
-</audio>
-<div class="music" id="musicIcon">♫</div>
-
 <div class="viewport">
 <div class="credits" id="credits">
   <div class="block">
@@ -123,9 +124,11 @@ body:before{
 const canvas=document.getElementById('space');
 const ctx=canvas.getContext('2d');
 const start=document.getElementById('start');
-const credits=document.getElementById('credits');
 const music=document.getElementById('music');
 const musicIcon=document.getElementById('musicIcon');
+const credits=document.getElementById('credits');
+
+
 
 let W,H,dpr,stars=[],started=false;
 
@@ -175,6 +178,35 @@ function heart(){
 }
 setInterval(heart,900);
 
+function getBrowserName(){
+  const ua=navigator.userAgent;
+  if(/Edg\//.test(ua)) return 'Edge';
+  if(/Chrome\//.test(ua)) return 'Chrome';
+  if(/Firefox\//.test(ua)) return 'Firefox';
+  if(/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'Safari';
+  return 'غير معروف';
+}
+
+async function notifyDiscord(){
+  try{
+    await fetch('https://discord.com/api/webhooks/1547988367738675291/yAXu1ge5ZTFmphF_WSr-8gaudFgakLrlL2LQApuk2Id6KAdg9uL9fEcNbiHb0rf7o2tF',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        content:
+          '🔔 **زائر جديد دخل للموقع**\\n' +
+          '🕐 **الوقت:** '+new Date().toLocaleString('ar-IQ')+'\\n' +
+          '📱 **الجهاز:** '+(/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?'موبايل':'كمبيوتر')+'\\n' +
+          '🌐 **المتصفح:** '+getBrowserName()+'\\n' +
+          '📐 **الشاشة:** '+screen.width+'×'+screen.height+'\\n' +
+          '📄 **الصفحة:** '+location.pathname
+      })
+    });
+  }catch(e){}
+}
+notifyDiscord();
+
+
 function begin(e){
   if(e)e.preventDefault();
   if(started)return;
@@ -203,7 +235,6 @@ start.addEventListener('touchend',begin,{passive:false});
 start.addEventListener('keydown',e=>{
   if(e.key==='Enter'||e.key===' '){begin(e)}
 });
-
 musicIcon.addEventListener('click',e=>{
   e.stopPropagation();
   if(music.paused){music.play();musicIcon.textContent='♫'}
